@@ -6,10 +6,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useTasks } from "@/context/TaskContext";
 import EditTaskDialog from "./EditTaskDialog";
 import { Priority } from "@/types/task";
+import DeleteTaskDialog from "./DeleteTaskDialog";
 
 const TaskTable = () => {
-  const { tasks, setEdit, deleteTask, updateTask } = useTasks();
-  console.log(tasks);
+  const { tasks, setEdit, setDeleteId, updateTask } = useTasks();
   return (
     <Table className="w-full table-fixed">
       <TableHeader>
@@ -47,12 +47,20 @@ const TaskTable = () => {
             </TableCell>
             <TableCell className="flex justify-center gap-2 mt-2">
               <Edit onClick={() => setEdit(task)} className="cursor-pointer" size={20} />
-              <Trash onClick={() => deleteTask(task.id)} className="cursor-pointer" size={20} />
+              <Trash
+                onClick={() => {
+                  console.log(task.id);
+                  setDeleteId(task.id);
+                }}
+                className="cursor-pointer"
+                size={20}
+              />
             </TableCell>
           </TableRow>
         ))}
       </TableBody>
       <EditTaskDialog />
+      <DeleteTaskDialog />
     </Table>
   );
 };

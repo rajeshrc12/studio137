@@ -48,7 +48,6 @@ const EditTaskDialog = () => {
   if (!edit) return;
 
   const onSubmit = (data: TaskFormValues) => {
-    console.log("Edited Task:", data, edit.id);
     updateTask({ ...edit, ...data });
     form.reset();
     setEdit(null);
