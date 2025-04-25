@@ -1,28 +1,15 @@
+"use client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import Status from "./Status";
+import StatusBadge from "./StatusBadge";
 import { Edit, Trash } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-const tasks = [
-  {
-    id: "1",
-    title: "title",
-    description: "This is a long description that should occupy more space.",
-    dueDate: "20-09-2022",
-    status: "completed",
-    priority: "Low",
-  },
-  {
-    id: "2",
-    title: "title",
-    description: "This is a long description that should occupy more space.",
-    dueDate: "20-09-2022",
-    status: "inProgress",
-    priority: "Medium",
-  },
-];
+import { useTasks } from "@/context/TaskContext";
+import EditTaskDialog from "./EditTaskDialog";
+import { Priority } from "@/types/task";
 
 const TaskTable = () => {
+  const { tasks, setEdit, deleteTask, updateTask } = useTasks();
+  console.log(tasks);
   return (
     <Table className="w-full table-fixed">
       <TableHeader>
@@ -44,10 +31,10 @@ const TaskTable = () => {
             <TableCell className="truncate">{task.description}</TableCell>
             <TableCell className="whitespace-nowrap">{task.dueDate}</TableCell>
             <TableCell className="whitespace-nowrap">
-              <Status status={task.status} />
+              <StatusBadge status={task.status} />
             </TableCell>
             <TableCell className="whitespace-nowrap">
-              <Select value={task.priority}>
+              <Select value={task.priority} onValueChange={(e: Priority) => updateTask({ ...task, priority: e })}>
                 <SelectTrigger className="border-black w-[110px]">
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
@@ -59,12 +46,13 @@ const TaskTable = () => {
               </Select>
             </TableCell>
             <TableCell className="flex justify-center gap-2 mt-2">
-              <Edit className="cursor-pointer" size={20} />
-              <Trash className="cursor-pointer" size={20} />
+              <Edit onClick={() => setEdit(task)} className="cursor-pointer" size={20} />
+              <Trash onClick={() => deleteTask(task.id)} className="cursor-pointer" size={20} />
             </TableCell>
           </TableRow>
         ))}
       </TableBody>
+      <EditTaskDialog />
     </Table>
   );
 };

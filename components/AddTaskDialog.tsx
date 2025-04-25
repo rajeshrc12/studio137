@@ -1,32 +1,53 @@
 "use client";
-import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { useTasks } from "@/context/TaskContext";
-import { Task } from "@/types/task";
-import { v4 as uuidv4 } from "uuid";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
+import { useTasks } from "@/context/TaskContext";
+import { v4 as uuidv4 } from "uuid";
+import { useState } from "react";
+import { Priority, Status } from "@/types/task";
 
-export default function AddTaskDialog() {
+const formSchema = z.object({
+  title: z.string().min(3, "Title must be at least 3 characters."),
+  description: z.string().min(10, "Description must be at least 10 characters."),
+  dueDate: z.string().refine((val) => !isNaN(Date.parse(val)), "Invalid date format"),
+});
+
+type TaskFormValues = z.infer<typeof formSchema>;
+
+const AddTaskDialog = () => {
   const { addTask } = useTasks();
-  const [form, setForm] = useState<Omit<Task, "id">>({
-    title: "",
-    description: "",
-    dueDate: "",
-    priority: "Medium",
-    status: "In Progress",
+  const [open, setOpen] = useState(false);
+
+  const form = useForm<TaskFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      dueDate: "",
+    },
   });
 
-  const handleSubmit = () => {
-    addTask({ id: uuidv4(), ...form });
-    setForm({ title: "", description: "", dueDate: "", priority: "Medium", status: "In Progress" });
+  const onSubmit = (data: TaskFormValues) => {
+    addTask({
+      ...data,
+      id: uuidv4(),
+      priority: Priority.LOW,
+      status: Status.IN_PROGRESS,
+    });
+    form.reset(); // optional: reset form fields
+    setOpen(false); // close dialog
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="default">
           <Plus color="#ffffff" /> Add Task
@@ -36,49 +57,61 @@ export default function AddTaskDialog() {
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold">Add New Task</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4">
-          <Input
-            placeholder="Title"
-            value={form.title}
-            onChange={(e) => setForm({ ...form, title: e.target.value })}
-            className="w-full rounded-md border border-gray-300 px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <Textarea
-            placeholder="Description"
-            value={form.description}
-            onChange={(e) => setForm({ ...form, description: e.target.value })}
-            className="w-full rounded-md border border-gray-300 px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <Input
-            type="date"
-            value={form.dueDate}
-            onChange={(e) => setForm({ ...form, dueDate: e.target.value })}
-            className="w-full rounded-md border border-gray-300 px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <Select value={form.priority} onValueChange={(val) => setForm({ ...form, priority: val as Task["priority"] })}>
-            <SelectTrigger className="w-full rounded-md border border-gray-300 px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <SelectValue placeholder="Select Priority" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="High">High</SelectItem>
-              <SelectItem value="Medium">Medium</SelectItem>
-              <SelectItem value="Low">Low</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select value={form.status} onValueChange={(val) => setForm({ ...form, status: val as Task["status"] })}>
-            <SelectTrigger className="w-full rounded-md border border-gray-300 px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <SelectValue placeholder="Select Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="In Progress">In Progress</SelectItem>
-              <SelectItem value="Completed">Completed</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button onClick={handleSubmit} className="w-full bg-blue-600 text-white hover:bg-blue-700">
-            Add Task
-          </Button>
-        </div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Title</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter task title" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="Task description..." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="dueDate"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Due Date</FormLabel>
+                  <FormControl className="w-full">
+                    <Input className="w-full" type="date" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button type="button" variant="outline" className="w-full" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+            <Button className="w-full" type="submit">
+              Submit
+            </Button>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default AddTaskDialog;
