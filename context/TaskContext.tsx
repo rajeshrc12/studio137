@@ -1,6 +1,7 @@
 "use client";
 import { createContext, useContext, useState, ReactNode } from "react";
-import { Filter, sampleTasks, Task, TaskContextType } from "@/types/task";
+import { Filter, Task, TaskContextType } from "@/types/task";
+import { sampleTasks } from "@/utils/data";
 
 const TaskContext = createContext<TaskContextType | undefined>(undefined);
 

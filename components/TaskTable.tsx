@@ -1,12 +1,13 @@
 "use client";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useTasks } from "@/context/TaskContext";
-import EditTaskDialog from "./EditTaskDialog";
-import DeleteTaskDialog from "./DeleteTaskDialog";
-import TaskTableRow from "./TaskTableRow";
+import EditTaskDialog from "@/components/EditTaskDialog";
+import DeleteTaskDialog from "@/components/DeleteTaskDialog";
+import TaskTableRow from "@/components/TaskTableRow";
 
 const TaskTable = () => {
   const { tasks } = useTasks();
+  if (!tasks.length) return <div>No task available</div>;
   return (
     <Table className="w-full table-fixed">
       <TableHeader className="hidden md:table-header-group">

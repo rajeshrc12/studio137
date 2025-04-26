@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Task } from "@/types/task";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import StatusBadge from "./StatusBadge";
+import StatusBadge from "@/components/StatusBadge";
 import { Priority } from "@/types/task";
 import { Edit, Trash } from "lucide-react";
 import { useTasks } from "@/context/TaskContext";
@@ -27,9 +27,9 @@ const TaskTableRow = ({ task, index }: { task: Task; index: number }) => {
               <SelectValue placeholder="Select" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="High">High</SelectItem>
-              <SelectItem value="Medium">Medium</SelectItem>
-              <SelectItem value="Low">Low</SelectItem>
+              <SelectItem value="high">High</SelectItem>
+              <SelectItem value="medium">Medium</SelectItem>
+              <SelectItem value="low">Low</SelectItem>
             </SelectContent>
           </Select>
         </TableCell>
@@ -80,9 +80,9 @@ const TaskTableRow = ({ task, index }: { task: Task; index: number }) => {
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="High">High</SelectItem>
-                  <SelectItem value="Medium">Medium</SelectItem>
-                  <SelectItem value="Low">Low</SelectItem>
+                  <SelectItem value="high">High</SelectItem>
+                  <SelectItem value="medium">Medium</SelectItem>
+                  <SelectItem value="low">Low</SelectItem>
                 </SelectContent>
               </Select>
               <div className="flex gap-4">
