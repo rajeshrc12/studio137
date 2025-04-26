@@ -13,7 +13,7 @@ const TaskTableRow = ({ task, index }: { task: Task; index: number }) => {
   const [mobileTableData, setMobileTableData] = useState(false);
   return (
     <Fragment key={task.id}>
-      <TableRow className="hidden md:table-row">
+      <TableRow className={`hidden md:table-row ${index % 2 !== 0 && "bg-[#FFF9F8]"}`}>
         <TableCell className="whitespace-nowrap">{index + 1}</TableCell>
         <TableCell className="truncate">{task.title}</TableCell>
         <TableCell className="truncate">{task.description}</TableCell>

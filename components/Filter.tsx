@@ -7,7 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Input } from "@/components/ui/input";
+import { FaSearch } from "react-icons/fa";
 import { Priority, Status } from "@/types/task";
 import { useTasks } from "@/context/TaskContext";
 import AddTaskDialog from "@/components/AddTaskDialog";
@@ -21,6 +21,7 @@ const Filter = () => {
   const [selectedPriority, setSelectedPriority] = useState<string[]>([]);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [searchText, setSearchText] = useState("");
+  const [mobileSearchBar, setMobileSearchBar] = useState(false);
 
   const { filterTasks } = useTasks();
 
@@ -65,8 +66,24 @@ const Filter = () => {
   return (
     <div className="flex flex-col items-center gap-4 flex-wrap">
       {/* Search Input */}
-      <Input className="w-full md:w-[300px]" placeholder="Search by title" value={searchText} onChange={handleSearchChange} />
-      <div className="flex justify-between w-full">
+      <div className="w-[200px] md:hidden flex justify-end">
+        {mobileSearchBar ? (
+          <div className="flex gap-2 items-center justify-end rounded border border-[#9B9B9B] px-2 py-1 w-full">
+            <FaSearch color="#9B9B9B" />
+            <input onBlur={() => setMobileSearchBar(false)} className="w-full md:w-[250px] border-none outline-none" placeholder="Search by title" value={searchText} onChange={handleSearchChange} />
+          </div>
+        ) : (
+          <Button onClick={() => setMobileSearchBar(true)} className="my-1">
+            <FaSearch color="#ffffff" />
+          </Button>
+        )}
+      </div>
+
+      <div className="hidden md:flex gap-2 items-center justify-end rounded border border-[#9B9B9B] px-2 py-1 w-full">
+        <FaSearch color="#9B9B9B" />
+        <input className="w-full md:w-[250px] border-none outline-none" placeholder="Search by title" value={searchText} onChange={handleSearchChange} />
+      </div>
+      <div className="flex gap-2 justify-between w-full">
         <AddTaskDialog />
 
         {/* Filter Button */}
