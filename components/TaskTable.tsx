@@ -12,8 +12,8 @@ const TaskTable = () => {
       <TableHeader className="hidden md:table-header-group">
         <TableRow className="border-primary">
           <TableHead className="whitespace-nowrap w-16">SL.No</TableHead>
-          <TableHead className="whitespace-nowrap w-32">Title</TableHead>
-          <TableHead className="w-32 md:w-full">Description</TableHead>
+          <TableHead className="md:w-full">Title</TableHead>
+          <TableHead className="md:w-full">Description</TableHead>
           <TableHead className="whitespace-nowrap w-32">Due Date</TableHead>
           <TableHead className="whitespace-nowrap w-32">Status</TableHead>
           <TableHead className="whitespace-nowrap w-32">Priority</TableHead>
