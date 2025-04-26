@@ -9,7 +9,7 @@ const TaskTable = () => {
   const { tasks } = useTasks();
   if (!tasks.length) return <div>No task available</div>;
   return (
-    <Table className="w-full table-fixed">
+    <Table className="w-full table-fixed bg-white">
       <TableHeader className="hidden md:table-header-group">
         <TableRow className="border-primary">
           <TableHead className="whitespace-nowrap w-16">SL.No</TableHead>

@@ -128,7 +128,7 @@ const EditTaskDialog = () => {
                 Cancel
               </Button>
               <Button className="grow-1" type="submit">
-                Submit
+                Edit Task
               </Button>
             </div>
           </form>
