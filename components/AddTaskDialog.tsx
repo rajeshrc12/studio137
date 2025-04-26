@@ -80,7 +80,7 @@ const AddTaskDialog = () => {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Task description..." {...field} />
+                    <Textarea className="h-[150px]" placeholder="Task description..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -100,13 +100,15 @@ const AddTaskDialog = () => {
                 </FormItem>
               )}
             />
-
-            <Button type="button" variant="outline" className="w-full" onClick={() => setOpen(false)}>
-              Cancel
-            </Button>
-            <Button className="w-full" type="submit">
-              Submit
-            </Button>
+            <div className="flex gap-2">
+              {" "}
+              <Button type="button" variant="outline" className="grow-1" onClick={() => setOpen(false)}>
+                Cancel
+              </Button>
+              <Button className="grow-1" type="submit">
+                Submit
+              </Button>
+            </div>
           </form>
         </Form>
       </DialogContent>

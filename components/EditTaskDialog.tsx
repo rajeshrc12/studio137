@@ -122,13 +122,15 @@ const EditTaskDialog = () => {
                 </FormItem>
               )}
             />
-
-            <Button onClick={() => setEdit(null)} type="button" variant="outline" className="w-full">
-              Cancel
-            </Button>
-            <Button className="w-full" type="submit">
-              Submit
-            </Button>
+            <div className="flex gap-2">
+              {" "}
+              <Button type="button" variant="outline" className="grow-1" onClick={() => setEdit(null)}>
+                Cancel
+              </Button>
+              <Button className="grow-1" type="submit">
+                Submit
+              </Button>
+            </div>
           </form>
         </Form>
       </DialogContent>
