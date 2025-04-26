@@ -13,7 +13,9 @@ import { useTasks } from "@/context/TaskContext";
 import AddTaskDialog from "@/components/AddTaskDialog";
 import { IoFilter } from "react-icons/io5";
 import { BiSort } from "react-icons/bi";
+
 let timeout: NodeJS.Timeout | null = null;
+
 const Filter = () => {
   const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
   const [selectedPriority, setSelectedPriority] = useState<string[]>([]);
@@ -21,6 +23,9 @@ const Filter = () => {
   const [searchText, setSearchText] = useState("");
 
   const { filterTasks } = useTasks();
+
+  const activeFiltersCount = selectedStatus.length + selectedPriority.length;
+  const isFilterActive = activeFiltersCount > 0;
 
   const applyFilters = (status: string[], priority: string[], sortOrder: "asc" | "desc", searchText: string) => {
     filterTasks({ status, priority, sort: sortOrder, searchText });
@@ -46,12 +51,11 @@ const Filter = () => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchText(value);
-    // Clear previous timeout if it exists
+
     if (timeout) {
       clearTimeout(timeout);
     }
 
-    // Set a new timeout to apply the search filter after 500ms
     timeout = setTimeout(() => {
       applyFilters(selectedStatus, selectedPriority, sortOrder, value);
       timeout = null;
@@ -63,14 +67,15 @@ const Filter = () => {
       {/* Search Input */}
       <Input className="w-full md:w-[300px]" placeholder="Search by title" value={searchText} onChange={handleSearchChange} />
       <div className="flex justify-between w-full">
-        {" "}
         <AddTaskDialog />
+
         {/* Filter Button */}
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="outline">
+            <Button variant={isFilterActive ? "default" : "outline"} className="relative">
               <IoFilter />
-              <span className="hidden md:block">Filter</span>
+              <span className="hidden md:block ml-1">Filter</span>
+              {isFilterActive && <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">{activeFiltersCount}</span>}
             </Button>
           </PopoverTrigger>
           <PopoverContent align="end" className="w-52 space-y-4">
@@ -105,12 +110,13 @@ const Filter = () => {
             </div>
           </PopoverContent>
         </Popover>
+
         {/* Sort Button */}
         <Popover>
           <PopoverTrigger asChild>
             <Button variant="outline">
               <BiSort />
-              <span className="hidden md:block">Sort</span>
+              <span className="hidden md:block ml-1">Sort</span>
             </Button>
           </PopoverTrigger>
           <PopoverContent align="end" className="w-40 space-y-4">
