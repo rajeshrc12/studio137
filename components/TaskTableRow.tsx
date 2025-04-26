@@ -53,13 +53,13 @@ const TaskTableRow = ({ task, index }: { task: Task; index: number }) => {
         </TableCell>
       </TableRow>
       <TableRow className={`md:hidden ${index % 2 !== 0 && "bg-[#FFF9F8]"}`}>
-        <TableCell className="font-semibold text-primary w-32">Title</TableCell>
-        <TableCell>{task.title}</TableCell>
+        <TableCell className="font-semibold text-primary flex justify-start">Title</TableCell>
+        <TableCell className="w-64 break-words whitespace-pre-wrap">{task.title}</TableCell>
       </TableRow>
       {mobileTableData && (
         <>
           <TableRow className="md:hidden">
-            <TableCell className="font-semibold text-primary">Description</TableCell>
+            <TableCell className="font-semibold text-primary flex justify-start">Description</TableCell>
             <TableCell className="w-64 break-words whitespace-pre-wrap">{task.description}</TableCell>
           </TableRow>
           <TableRow className="md:hidden">
