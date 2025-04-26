@@ -6,7 +6,7 @@ import { useTasks } from "@/context/TaskContext";
 
 const DeleteTaskDialog = () => {
   const { deleteId, setDeleteId, deleteTask } = useTasks();
-  console.log(deleteId);
+
   if (!deleteId) return;
 
   const onSubmit = () => {

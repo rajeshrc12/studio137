@@ -6,7 +6,7 @@ import Image from "next/image";
 export default function HomePage() {
   return (
     <TaskProvider>
-      <div className="flex flex-col gap-5 w-full px-10 py-5 bg-[#FCFCFC]">
+      <div className="flex flex-col gap-5 w-full px-5 md:px-10 py-5 bg-[#FCFCFC]">
         <div className="flex justify-between items-center">
           <div>
             <Image unoptimized height={50} width={50} alt="logo" src={"/logo.jpg"} />
