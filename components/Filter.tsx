@@ -61,7 +61,7 @@ const Filter = () => {
   return (
     <div className="flex flex-col items-center gap-4 flex-wrap">
       {/* Search Input */}
-      <Input className="w-[300px]" placeholder="Search by title" value={searchText} onChange={handleSearchChange} />
+      <Input className="w-full md:w-[300px]" placeholder="Search by title" value={searchText} onChange={handleSearchChange} />
       <div className="flex justify-between w-full">
         {" "}
         <AddTaskDialog />
