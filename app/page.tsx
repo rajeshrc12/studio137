@@ -3,7 +3,6 @@ import TaskTable from "@/components/TaskTable";
 import AddTaskDialog from "@/components/AddTaskDialog";
 import SearchBar from "@/components/SearchBar";
 import Filter from "@/components/Filter";
-import Sort from "@/components/Sort";
 import Image from "next/image";
 
 export default function HomePage() {
@@ -19,7 +18,6 @@ export default function HomePage() {
           <div className="flex gap-2">
             <AddTaskDialog />
             <Filter />
-            <Sort />
           </div>
         </div>
 

@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Plus } from "lucide-react";
 import { useTasks } from "@/context/TaskContext";
 import { v4 as uuidv4 } from "uuid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Priority, Status } from "@/types/task";
 
 const formSchema = z.object({
@@ -45,7 +45,14 @@ const AddTaskDialog = () => {
     form.reset(); // optional: reset form fields
     setOpen(false); // close dialog
   };
-
+  useEffect(() => {
+    return () =>
+      form.reset({
+        title: "",
+        description: "",
+        dueDate: "",
+      });
+  }, []);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
