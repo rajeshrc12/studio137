@@ -1,28 +1,12 @@
 "use client";
 import { createContext, useContext, useState, ReactNode } from "react";
-import { Task } from "@/types/task";
-
-interface Filter {
-  action: string;
-  payload: string | string[];
-}
-interface TaskContextType {
-  tasks: Task[];
-  edit: Task | null;
-  deleteId: string | null;
-  addTask: (task: Task) => void;
-  updateTask: (task: Task) => void;
-  deleteTask: (id: string) => void;
-  setEdit: (task: Task | null) => void;
-  setDeleteId: (id: string | null) => void;
-  filterTasks: (filter: Filter) => void;
-}
+import { Filter, sampleTasks, Task, TaskContextType } from "@/types/task";
 
 const TaskContext = createContext<TaskContextType | undefined>(undefined);
 
 export const TaskProvider = ({ children }: { children: ReactNode }) => {
-  const [allTasks, setAllTasks] = useState<Task[]>([]); // full list
-  const [tasks, setTasks] = useState<Task[]>([]); // displayed list
+  const [allTasks, setAllTasks] = useState<Task[]>(sampleTasks); // full list
+  const [tasks, setTasks] = useState<Task[]>(sampleTasks); // displayed list
   const [edit, setEdit] = useState<Task | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
@@ -41,21 +25,35 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
     setTasks((prev) => prev.filter((t) => t.id !== id));
   };
 
-  const filterTasks = (filter: Filter) => {
+  const filterTasks = (filters: Filter) => {
     if (!allTasks.length) return;
-    let tempTask = JSON.parse(JSON.stringify(allTasks));
-    if (filter.action === "asc") {
-      tempTask.sort((a: Task, b: Task) => new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime());
+
+    let tempTask = [...allTasks];
+
+    // 1. Filter by status
+    if (filters.status.length) {
+      tempTask = tempTask.filter((task) => filters.status.includes(task.status));
     }
-    if (filter.action === "desc") {
-      tempTask.sort((a: Task, b: Task) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime());
+
+    // 2. Filter by priority
+    if (filters.priority.length) {
+      tempTask = tempTask.filter((task) => filters.priority.includes(task.priority));
     }
-    if (filter.action === "status" && filter.payload.length) {
-      tempTask = tempTask.filter((task: Task) => filter.payload.includes(task.status));
+
+    // 3. Filter by searchText
+    if (filters.searchText.trim()) {
+      const searchLower = filters.searchText.toLowerCase();
+      tempTask = tempTask.filter((task) => task.title.toLowerCase().includes(searchLower) || task.description.toLowerCase().includes(searchLower));
     }
-    if (filter.action === "priority" && filter.payload.length) {
-      tempTask = tempTask.filter((task: Task) => filter.payload.includes(task.priority));
+
+    // 4. Sort
+    if (filters.sort === "asc") {
+      tempTask.sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime());
+    } else if (filters.sort === "desc") {
+      tempTask.sort((a, b) => new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime());
     }
+
+    // 5. Set tasks
     setTasks(tempTask);
   };
 
