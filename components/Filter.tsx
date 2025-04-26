@@ -11,6 +11,8 @@ import { Input } from "@/components/ui/input";
 import { Priority, Status } from "@/types/task";
 import { useTasks } from "@/context/TaskContext";
 import AddTaskDialog from "@/components/AddTaskDialog";
+import { IoFilter } from "react-icons/io5";
+import { BiSort } from "react-icons/bi";
 let timeout: NodeJS.Timeout | null = null;
 const Filter = () => {
   const [selectedStatus, setSelectedStatus] = useState<string[]>([]);
@@ -66,7 +68,10 @@ const Filter = () => {
         {/* Filter Button */}
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="outline">Filter</Button>
+            <Button variant="outline">
+              <IoFilter />
+              <span className="hidden md:block">Filter</span>
+            </Button>
           </PopoverTrigger>
           <PopoverContent align="end" className="w-52 space-y-4">
             {/* Status Filter */}
@@ -103,7 +108,10 @@ const Filter = () => {
         {/* Sort Button */}
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="outline">Sort</Button>
+            <Button variant="outline">
+              <BiSort />
+              <span className="hidden md:block">Sort</span>
+            </Button>
           </PopoverTrigger>
           <PopoverContent align="end" className="w-40 space-y-4">
             <div>

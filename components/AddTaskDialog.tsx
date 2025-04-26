@@ -8,11 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Plus } from "lucide-react";
 import { useTasks } from "@/context/TaskContext";
 import { v4 as uuidv4 } from "uuid";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Priority, Status } from "@/types/task";
+import { FaPlus } from "react-icons/fa6";
 
 const formSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters."),
@@ -45,19 +45,12 @@ const AddTaskDialog = () => {
     form.reset(); // optional: reset form fields
     setOpen(false); // close dialog
   };
-  useEffect(() => {
-    return () =>
-      form.reset({
-        title: "",
-        description: "",
-        dueDate: "",
-      });
-  }, []);
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="default">
-          <Plus color="#ffffff" /> Add Task
+          <FaPlus color="#ffffff" /> Add Task
         </Button>
       </DialogTrigger>
       <DialogContent className="rounded-lg p-6 shadow-lg">

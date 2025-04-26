@@ -27,7 +27,7 @@ const TaskTable = () => {
         {tasks.map((task, index) => (
           <TableRow key={task.id}>
             <TableCell className="whitespace-nowrap">{index + 1}</TableCell>
-            <TableCell className="whitespace-nowrap">{task.title}</TableCell>
+            <TableCell className="truncate">{task.title}</TableCell>
             <TableCell className="truncate">{task.description}</TableCell>
             <TableCell className="whitespace-nowrap">{task.dueDate}</TableCell>
             <TableCell className="whitespace-nowrap">
