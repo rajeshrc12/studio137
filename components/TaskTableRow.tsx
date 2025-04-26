@@ -14,9 +14,9 @@ const TaskTableRow = ({ task, index }: { task: Task; index: number }) => {
   return (
     <Fragment>
       <TableRow className={`hidden md:table-row ${index % 2 !== 0 && "bg-[#FFF9F8]"}`}>
-        <TableCell className="whitespace-nowrap">{index + 1}</TableCell>
-        <TableCell className="truncate">{task.title}</TableCell>
-        <TableCell className="truncate">{task.description}</TableCell>
+        <TableCell>{index + 1}</TableCell>
+        <TableCell className="break-words whitespace-pre-wrap">{task.title}</TableCell>
+        <TableCell className="break-words whitespace-pre-wrap">{task.description}</TableCell>
         <TableCell className="whitespace-nowrap">{task.dueDate}</TableCell>
         <TableCell className="whitespace-nowrap">
           <StatusBadge status={task.status} />
